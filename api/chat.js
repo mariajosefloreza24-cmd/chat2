@@ -20,9 +20,7 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
-    const text =
-      data.output?.[0]?.content?.[0]?.text ||
-      "No pude generar una respuesta.";
+    const text = data.output_text || "No pude generar una respuesta.";
 
     res.status(200).json({ reply: text });
   } catch (error) {
