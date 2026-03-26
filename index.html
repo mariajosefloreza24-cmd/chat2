@@ -80,22 +80,40 @@
   </div>
 
   <script>
-    function sendMessage() {
-      const input = document.getElementById("userInput");
-      const chatBox = document.getElementById("chatBox");
+  async function sendMessage() {
+    const input = document.getElementById("userInput");
+    const chatBox = document.getElementById("chatBox");
 
-      const userText = input.value;
+    const userText = input.value;
+    if (!userText) return;
 
-      if (!userText) return;
+    chatBox.innerHTML += `<div class="message user">Tú: ${userText}</div>`;
+    input.value = "";
 
-      chatBox.innerHTML += `<div class="message user">Tú: ${userText}</div>`;
+    const loadingId = "loading-" + Date.now();
+    chatBox.innerHTML += `<div class="message assistant" id="${loadingId}">Asistente: escribiendo...</div>`;
+    chatBox.scrollTop = chatBox.scrollHeight;
 
-      // respuesta simulada
-      chatBox.innerHTML += `<div class="message assistant">Asistente: (aquí irá la respuesta del modelo)</div>`;
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message: userText })
+      });
 
-      input.value = "";
-      chatBox.scrollTop = chatBox.scrollHeight;
+      const data = await response.json();
+
+      document.getElementById(loadingId).innerHTML =
+        `<div class="message assistant">Asistente: ${data.reply}</div>`;
+    } catch (error) {
+      document.getElementById(loadingId).innerHTML =
+        `<div class="message assistant">Asistente: Hubo un error al responder.</div>`;
     }
-  </script>
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+</script>
 </body>
 </html>
