@@ -17,30 +17,85 @@
     }
 
     .container {
+      width: 400px;
       text-align: center;
+    }
+
+    .chat-box {
+      background: #0F1524;
+      border-radius: 20px;
+      padding: 20px;
+      height: 300px;
+      overflow-y: auto;
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    .input-area {
+      display: flex;
+      gap: 10px;
+    }
+
+    input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
     }
 
     button {
       background: #08F382;
       color: #0B1320;
       border: none;
-      padding: 12px 20px;
-      border-radius: 20px;
+      padding: 10px 15px;
+      border-radius: 10px;
       cursor: pointer;
-      margin-top: 20px;
       font-weight: bold;
+    }
+
+    .message {
+      margin-bottom: 10px;
+    }
+
+    .user {
+      color: #08F382;
+    }
+
+    .assistant {
+      color: white;
     }
   </style>
 </head>
 
 <body>
   <div class="container">
-    <h1>In-Sight Portal</h1>
-    <p>Tu demo está funcionando 🚀</p>
+    <h1>In-Sight Chat</h1>
 
-    <button onclick="alert('Aquí irá el chat')">
-      Abrir chat
-    </button>
+    <div class="chat-box" id="chatBox"></div>
+
+    <div class="input-area">
+      <input id="userInput" placeholder="Haz una pregunta..." />
+      <button onclick="sendMessage()">Enviar</button>
+    </div>
   </div>
+
+  <script>
+    function sendMessage() {
+      const input = document.getElementById("userInput");
+      const chatBox = document.getElementById("chatBox");
+
+      const userText = input.value;
+
+      if (!userText) return;
+
+      chatBox.innerHTML += `<div class="message user">Tú: ${userText}</div>`;
+
+      // respuesta simulada
+      chatBox.innerHTML += `<div class="message assistant">Asistente: (aquí irá la respuesta del modelo)</div>`;
+
+      input.value = "";
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  </script>
 </body>
 </html>
